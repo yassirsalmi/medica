@@ -62,7 +62,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       'Email',
                       'Email Adresse',
                       viewModel.emailController,
-                      viewModel.validateEmail,
+                      // viewModel.validateEmail,
                       Config.primaryColor,
                       (value) => viewModel.updateEmail(value),
                     ),
@@ -92,16 +92,17 @@ class _SignUpFormState extends State<SignUpForm> {
                       onPressed: () {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
-                          viewModel.confirmEmail(this.context);
-                          viewModel.confirmPassword(this.context);
-                          // If the form is valid, display a snackbar. In the real world,
-                          // you'd often call a server or save the information in a database.
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Processing Data')),
-                          );
-                          // viewModel.signUp(context);
+                          //after validate that the form field is not empty
+                          //we pass to confirm email format and confirmation
+                          //of password so we process data and let the user
+                          //sign up and create a new account
+                          if (viewModel.confirmEmail(this.context) &&
+                              viewModel.confirmPassword(this.context)) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Processing Data')),
+                            );
+                          }
                         }
-                        // viewModel.signUp(context);
                       },
                     ),
                   ],

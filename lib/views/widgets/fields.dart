@@ -32,7 +32,7 @@ Widget emailField(
   String labelText,
   String hintText,
   TextEditingController controller,
-  String? Function(String?)? validateEmail,
+  // String? Function(String?)? validateEmail,
   Color color,
   void Function(dynamic value) param4,
 ) {
@@ -40,13 +40,13 @@ Widget emailField(
     controller: controller,
     keyboardType: TextInputType.emailAddress,
     cursorColor: color,
-    validator: validateEmail,
-    // (value) {
-    //   if (value == null || value.isEmpty) {
-    //     return 'Please enter your email';
-    //   }
-    //   return null;
-    // },
+    // validator: validateEmail,
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'Please enter your email';
+      }
+      return null;
+    },
     decoration: InputDecoration(
       hintText: 'Email Adresse',
       labelText: 'Email',

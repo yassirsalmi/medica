@@ -1,39 +1,22 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:medica/config/config.dart';
 import 'package:medica/data/models/user_model.dart';
 
-class SignUpViewModel extends ChangeNotifier {
-  bool obsecurePassword = true;
-  bool obsecurePassword2 = true;
+class LoginPageViewModel extends ChangeNotifier {
   final UserModel user = UserModel(
     firstName: '',
     lastName: '',
     email: '',
     password: '',
   );
-  final ImagePicker _picker = ImagePicker();
 
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
+  bool _isLoading = false;
+  bool obsecurePassword = true;
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
 
-  void updateFirstName(String value) {
-    user.firstName = value;
-    notifyListeners();
-  }
-
-  void updateLastName(String value) {
-    user.lastName = value;
-    notifyListeners();
-  }
+  bool get isLoading => _isLoading;
 
   void updateEmail(String value) {
     user.email = value;
@@ -53,16 +36,6 @@ class SignUpViewModel extends ChangeNotifier {
         behavior: SnackBarBehavior.floating,
       ),
     );
-  }
-
-  bool confirmPassword(BuildContext context) {
-    if (passwordController.text != confirmPasswordController.text) {
-      showSnackBarMessage(context, 'please confirm your password');
-      notifyListeners();
-      return false;
-    } else {
-      return true;
-    }
   }
 
   bool confirmEmail(BuildContext context) {
@@ -90,24 +63,12 @@ class SignUpViewModel extends ChangeNotifier {
     obsecurePassword = !obsecurePassword;
     notifyListeners();
   }
+  //the connect method should be defied in here
 
-  void togglePasswordVisibility2() {
-    obsecurePassword2 = !obsecurePassword2;
-    notifyListeners();
-  }
-
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
-    if (pickedFile != null) {
-      user.updateImageFile(File(pickedFile.path));
-      notifyListeners();
-    }
-  }
-
-  void controllerToString() {
-    user.updateFirstName(firstNameController.text.trim());
-    user.updateLastName(lastNameController.text.trim());
-    user.updateEmail(emailController.text.trim());
-    user.updatePassword(passwordController.text.trim());
+  void login() {
+    _isLoading = true;
+    /*
+      check for the email and password in the database to allow the user to connect
+     */
   }
 }
