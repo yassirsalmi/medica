@@ -2,9 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:medica/config/config.dart';
-import 'package:medica/presentation/widgets/login_form.dart';
-import 'package:medica/presentation/widgets/social_button.dart';
+import 'package:medica/views/widgets/login_form.dart';
+import 'package:medica/views/widgets/social_button.dart';
 import 'package:medica/utils/text.dart';
+//this is the login screen of our app medica
+//the login form is in a nother file named loginform.dart
+//i tried to separate the ui from the business part
+//so i can go back to the code source and understand what i did
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -135,7 +139,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/signup');
+                    },
                     child: const Text(
                       'Sign Up',
                       style: TextStyle(

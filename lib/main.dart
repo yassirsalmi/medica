@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medica/config/config.dart';
-import 'package:medica/presentation/views/login_page.dart';
-import 'package:medica/presentation/views/sign_up_page.dart';
-import 'package:medica/presentation/views/splash_screen.dart';
+import 'package:medica/views/screens/login_page.dart';
+import 'package:medica/views/screens/sign_up_page.dart';
+import 'package:medica/views/screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());

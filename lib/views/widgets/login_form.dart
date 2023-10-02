@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medica/config/config.dart';
-import 'package:medica/presentation/widgets/button.dart';
+import 'package:medica/views/widgets/button.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
