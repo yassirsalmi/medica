@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
-import 'package:medica/viewmodels/auth_view_models/auth.dart';
+import 'package:medica/views/widgets/personal_widgets/search_field.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,30 +11,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final User? user = Auth().currentUser;
-
-  Future<void> signOut() async {
-    await Auth().signOut();
-    if (!context.mounted) return;
-    Navigator.pushReplacementNamed(context, '/login');
-  }
-
-  Widget _userUid() {
-    return Text(user?.email ?? "user email");
-  }
-
-  Widget _signOutButton() {
-    return ElevatedButton(onPressed: signOut, child: const Text("signout"));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: _userUid(),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 12,
+            horizontal: 8,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SearchField(),
+              ],
+            ),
+          ),
         ),
-        body: Center(
-          child: _signOutButton(),
-        ));
+      ),
+    );
   }
 }

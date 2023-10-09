@@ -53,7 +53,7 @@ class _LoginFormState extends State<LoginForm> {
                     if (_formKey.currentState!.validate()) {
                       if (viewModel.confirmEmail(context)) {
                         viewModel.signInWithEmailAndPassword();
-                        Navigator.pushReplacementNamed(context, '/home');
+                        Navigator.pushReplacementNamed(context, '/main');
                       }
                     }
                   },
