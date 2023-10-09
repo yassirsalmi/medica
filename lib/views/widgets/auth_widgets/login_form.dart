@@ -31,7 +31,6 @@ class _LoginFormState extends State<LoginForm> {
                   'Email',
                   'Email Adresse',
                   viewModel.emailController,
-                  // viewModel.validateEmail,
                   Config.primaryColor,
                   (value) => viewModel.updateEmail(value),
                 ),

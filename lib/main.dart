@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medica/config/config.dart';
-import 'package:medica/views/screens/login_page.dart';
-import 'package:medica/views/screens/sign_up_page.dart';
+import 'package:medica/views/screens/auth_pages/login_page.dart';
+import 'package:medica/views/screens/auth_pages/sign_up_page.dart';
 import 'package:medica/views/screens/splash_screen.dart';
 
 void main() {

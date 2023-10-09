@@ -62,7 +62,6 @@ class _SignUpFormState extends State<SignUpForm> {
                       'Email',
                       'Email Adresse',
                       viewModel.emailController,
-                      // viewModel.validateEmail,
                       Config.primaryColor,
                       (value) => viewModel.updateEmail(value),
                     ),
