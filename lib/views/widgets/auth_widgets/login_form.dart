@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medica/config/config.dart';
-import 'package:medica/viewmodels/login_page_view_model.dart';
-import 'package:medica/views/widgets/button.dart';
-import 'package:medica/views/widgets/fields.dart';
+import 'package:medica/viewmodels/auth_view_models/login_page_view_model.dart';
+import 'package:medica/views/widgets/auth_widgets/button.dart';
+import 'package:medica/views/widgets/auth_widgets/fields.dart';
 import 'package:provider/provider.dart';
 
 class LoginForm extends StatefulWidget {

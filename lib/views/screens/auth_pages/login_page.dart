@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:medica/config/config.dart';
-import 'package:medica/views/widgets/login_form.dart';
-import 'package:medica/views/widgets/social_button.dart';
+import 'package:medica/views/widgets/auth_widgets/login_form.dart';
+import 'package:medica/views/widgets/auth_widgets/social_button.dart';
 import 'package:medica/utils/text.dart';
 //this is the login screen of our app medica
 //the login form is in a nother file named loginform.dart

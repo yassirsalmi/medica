@@ -5,9 +5,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:medica/config/config.dart';
-import 'package:medica/viewmodels/sign_up_view_model.dart';
-import 'package:medica/views/widgets/button.dart';
-import 'package:medica/views/widgets/fields.dart';
+import 'package:medica/viewmodels/auth_view_models/sign_up_view_model.dart';
+import 'package:medica/views/widgets/auth_widgets/button.dart';
+import 'package:medica/views/widgets/auth_widgets/fields.dart';
 import 'package:provider/provider.dart';
 
 class SignUpForm extends StatefulWidget {
