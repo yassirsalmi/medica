@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -34,7 +32,7 @@ class _SignUpFormState extends State<SignUpForm> {
             return Form(
               key: _formKey,
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -84,22 +82,22 @@ class _SignUpFormState extends State<SignUpForm> {
                       viewModel.togglePasswordVisibility2,
                     ),
                     Config.smallSpace,
+                    /*
+                      after validate that the form field is not empty
+                      we pass to confirm email format and confirmation
+                      of password so we process data and let the user
+                      sign up and create a new account
+                    */
                     Button(
                       width: double.infinity,
-                      title: 'Sign In',
+                      title: 'Sign Up',
                       disable: false,
                       onPressed: () {
-                        // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
-                          //after validate that the form field is not empty
-                          //we pass to confirm email format and confirmation
-                          //of password so we process data and let the user
-                          //sign up and create a new account
                           if (viewModel.confirmEmail(this.context) &&
                               viewModel.confirmPassword(this.context)) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Processing Data')),
-                            );
+                            viewModel.createUserWithEmailAndPassword();
+                            Navigator.pushReplacementNamed(context, '/login');
                           }
                         }
                       },
@@ -165,8 +163,8 @@ class _SignUpFormState extends State<SignUpForm> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                child: Row(
-                  children: const [
+                child: const Row(
+                  children: [
                     Icon(
                       Icons.camera_alt_outlined,
                       size: 36,
@@ -178,12 +176,12 @@ class _SignUpFormState extends State<SignUpForm> {
                   takePhoto(ImageSource.camera);
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 width: 32,
               ),
               GestureDetector(
-                child: Row(
-                  children: const [
+                child: const Row(
+                  children: [
                     Icon(
                       Icons.image,
                       size: 36,
@@ -211,6 +209,3 @@ class _SignUpFormState extends State<SignUpForm> {
     });
   }
 }
-/*
-
-*/

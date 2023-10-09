@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medica/config/config.dart';
 import 'package:medica/data/models/user_model.dart';
+import 'package:medica/viewmodels/auth_view_models/auth.dart';
 
 class LoginPageViewModel extends ChangeNotifier {
   final UserModel user = UserModel(
@@ -10,13 +12,13 @@ class LoginPageViewModel extends ChangeNotifier {
     password: '',
   );
 
-  bool _isLoading = false;
+  // bool _isLoading = false;
   bool obsecurePassword = true;
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  bool get isLoading => _isLoading;
+  // bool get isLoading => _isLoading;
 
   void updateEmail(String value) {
     user.email = value;
@@ -63,12 +65,14 @@ class LoginPageViewModel extends ChangeNotifier {
     obsecurePassword = !obsecurePassword;
     notifyListeners();
   }
-  //the connect method should be defied in here
 
-  void login() {
-    _isLoading = true;
-    /*
-      check for the email and password in the database to allow the user to connect
-     */
+  Future<void> signInWithEmailAndPassword() async {
+    try {
+      await Auth().signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim());
+    } on FirebaseAuthException {
+      // on error msg is displayed
+    }
   }
 }

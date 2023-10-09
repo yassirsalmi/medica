@@ -52,14 +52,8 @@ class _LoginFormState extends State<LoginForm> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       if (viewModel.confirmEmail(context)) {
-                        viewModel.login();
-                        if (viewModel.isLoading) {
-                          const CircularProgressIndicator();
-                        }
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('try to connect to hame page')),
-                        );
+                        viewModel.signInWithEmailAndPassword();
+                        Navigator.pushReplacementNamed(context, '/home');
                       }
                     }
                   },

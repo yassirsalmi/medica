@@ -2,10 +2,12 @@
 
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:medica/config/config.dart';
 import 'package:medica/data/models/user_model.dart';
+import 'package:medica/viewmodels/auth_view_models/auth.dart';
 
 class SignUpViewModel extends ChangeNotifier {
   bool obsecurePassword = true;
@@ -109,5 +111,15 @@ class SignUpViewModel extends ChangeNotifier {
     user.updateLastName(lastNameController.text.trim());
     user.updateEmail(emailController.text.trim());
     user.updatePassword(passwordController.text.trim());
+  }
+
+  Future<void> createUserWithEmailAndPassword() async {
+    try {
+      await Auth().createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim());
+    } on FirebaseAuthException {
+      // on error msg is displayed
+    }
   }
 }
