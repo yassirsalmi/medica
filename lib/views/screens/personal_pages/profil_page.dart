@@ -29,11 +29,27 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: _userUid(),
-        ),
-        body: Center(
-          child: _signOutButton(),
-        ));
+      appBar: AppBar(
+        title: _userUid(),
+      ),
+      body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/medica_background.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Column(
+            children: <Widget>[
+              Center(
+                child: CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/default.jpg'),
+                ),
+              ),
+              _userUid(),
+              _signOutButton(),
+            ],
+          )),
+    );
   }
 }

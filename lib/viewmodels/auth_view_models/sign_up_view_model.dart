@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,6 +20,7 @@ class SignUpViewModel extends ChangeNotifier {
     password: '',
   );
   final ImagePicker _picker = ImagePicker();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
@@ -113,11 +115,33 @@ class SignUpViewModel extends ChangeNotifier {
     user.updatePassword(passwordController.text.trim());
   }
 
+  // Function to save the user to Firestore
+  Future<void> saveUserToFirestore(UserModel user) async {
+    controllerToString();
+    try {
+      final userRef = _firestore.collection('clients');
+      // Obtenir l'UID de l'utilisateur actuellement connecté à partir de Firebase Auth
+      final currentUser = FirebaseAuth.instance.currentUser;
+      final uid = currentUser!.uid;
+      final documentRef = userRef.doc(uid);
+      await documentRef.set({
+        'firstName': user.firstName,
+        'lastName': user.lastName,
+        'email': user.email,
+        'password': user.password,
+      });
+    } catch (e) {
+      print("Error saving user to Firestore: $e");
+      // Handle the error as needed
+    }
+  }
+
   Future<void> createUserWithEmailAndPassword() async {
     try {
       await Auth().createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
+      await saveUserToFirestore(user);
     } on FirebaseAuthException {
       // on error msg is displayed
     }
