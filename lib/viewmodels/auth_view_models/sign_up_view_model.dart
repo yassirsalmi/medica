@@ -119,16 +119,17 @@ class SignUpViewModel extends ChangeNotifier {
   Future<void> saveUserToFirestore(UserModel user) async {
     controllerToString();
     try {
-      final userRef = _firestore.collection('clients');
+      final clientsRef = _firestore.collection('clients');
       // Obtenir l'UID de l'utilisateur actuellement connecté à partir de Firebase Auth
       final currentUser = FirebaseAuth.instance.currentUser;
       final uid = currentUser!.uid;
-      final documentRef = userRef.doc(uid);
+      final documentRef = clientsRef.doc(uid);
       await documentRef.set({
         'firstName': user.firstName,
         'lastName': user.lastName,
         'email': user.email,
         'password': user.password,
+        // Add other user properties as needed
       });
     } catch (e) {
       print("Error saving user to Firestore: $e");
@@ -138,12 +139,20 @@ class SignUpViewModel extends ChangeNotifier {
 
   Future<void> createUserWithEmailAndPassword() async {
     try {
+      controllerToString(); // Update the UserModel with form data
       await Auth().createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim());
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
       await saveUserToFirestore(user);
-    } on FirebaseAuthException {
-      // on error msg is displayed
+      // Show a success message or navigate to a different screen here
+    } on FirebaseAuthException catch (e) {
+      // Handle any Firebase Authentication errors here
+      // You can show an error message to the user if needed
+      print("Firebase Authentication Error: ${e.message}");
+    } catch (e) {
+      print("Error saving user to Firestore: $e");
+      // Handle the Firestore save error as needed
     }
   }
 }

@@ -29,9 +29,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: _userUid(),
-      ),
       body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -39,16 +36,20 @@ class _ProfilePageState extends State<ProfilePage> {
               fit: BoxFit.cover,
             ),
           ),
-          child: Column(
-            children: <Widget>[
-              Center(
-                child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/default.jpg'),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
+            child: Column(
+              children: <Widget>[
+                const Center(
+                  child: CircleAvatar(
+                    radius: 84.0,
+                    backgroundImage: AssetImage('assets/images/default.jpg'),
+                  ),
                 ),
-              ),
-              _userUid(),
-              _signOutButton(),
-            ],
+                _userUid(),
+                _signOutButton(),
+              ],
+            ),
           )),
     );
   }
