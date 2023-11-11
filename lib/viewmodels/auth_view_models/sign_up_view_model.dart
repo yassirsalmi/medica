@@ -1,11 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:medica/config/config.dart';
 import 'package:medica/data/models/user_model.dart';
 import 'package:medica/viewmodels/auth_view_models/auth.dart';
@@ -18,8 +17,8 @@ class SignUpViewModel extends ChangeNotifier {
     lastName: '',
     email: '',
     password: '',
+    imageFile: File('assets/default.jpg'),
   );
-  final ImagePicker _picker = ImagePicker();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final TextEditingController firstNameController = TextEditingController();
@@ -46,6 +45,11 @@ class SignUpViewModel extends ChangeNotifier {
 
   void updatePassword(String value) {
     user.password = value;
+    notifyListeners();
+  }
+
+  void updateImageFile(File newImageFile) {
+    user.imageFile = newImageFile;
     notifyListeners();
   }
 
@@ -77,10 +81,8 @@ class SignUpViewModel extends ChangeNotifier {
         r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
         r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
         r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
-
     final regex = RegExp(pattern);
     final email = emailController.text.trim();
-
     if (!regex.hasMatch(email)) {
       showSnackBarMessage(context, 'Enter a valid email address');
       notifyListeners();
@@ -100,11 +102,13 @@ class SignUpViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
-    if (pickedFile != null) {
-      user.updateImageFile(File(pickedFile.path));
+  void updatePhoto(File photo) {
+    // File newImageFile = File(photo);
+    if (photo.existsSync()) {
+      updateImageFile(photo);
       notifyListeners();
+    } else {
+      print("The file does not exist at the specified path.");
     }
   }
 
@@ -114,16 +118,16 @@ class SignUpViewModel extends ChangeNotifier {
     user.updateEmail(emailController.text.trim());
     user.updatePassword(passwordController.text.trim());
   }
+  /*
+    need to test this more to reduce the complexity
+    the methode that save hte user to firebase and the one how savehis profile pic
+  */
 
   // Function to save the user to Firestore
-  Future<void> saveUserToFirestore(UserModel user) async {
-    controllerToString();
+  Future<void> saveUserToFirestore(UserModel user, String userUid) async {
     try {
       final clientsRef = _firestore.collection('clients');
-      // Obtenir l'UID de l'utilisateur actuellement connecté à partir de Firebase Auth
-      final currentUser = FirebaseAuth.instance.currentUser;
-      final uid = currentUser!.uid;
-      final documentRef = clientsRef.doc(uid);
+      final documentRef = clientsRef.doc(userUid);
       await documentRef.set({
         'firstName': user.firstName,
         'lastName': user.lastName,
@@ -133,7 +137,43 @@ class SignUpViewModel extends ChangeNotifier {
       });
     } catch (e) {
       print("Error saving user to Firestore: $e");
-      // Handle the error as needed
+    }
+  }
+
+  Future<String> uploadProfilePicture(UserModel user, String userUID) async {
+    if (user.imageFile == null) {
+      // No image provided, use the default image from assets
+      try {
+        final defaultImageBytes =
+            await rootBundle.load('assets/images/default.jpg');
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('profile_pictures')
+            .child(userUID);
+        await storageRef.putData(defaultImageBytes.buffer.asUint8List());
+
+        final downloadURL = await storageRef.getDownloadURL();
+        return downloadURL;
+      } catch (e) {
+        print(
+            "Error uploading default profile picture to Firebase Storage: $e");
+        return '';
+      }
+    }
+
+    // // Image is provided, upload it
+    try {
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('profile_pictures')
+          .child(userUID);
+      await storageRef.putFile(user.imageFile!);
+
+      final downloadURL = await storageRef.getDownloadURL();
+      return downloadURL;
+    } catch (e) {
+      print("Error uploading profile picture to Firebase Storage: $e");
+      return '';
     }
   }
 
@@ -144,14 +184,17 @@ class SignUpViewModel extends ChangeNotifier {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-      await saveUserToFirestore(user);
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      await saveUserToFirestore(user, uid);
+      print('created the user');
+      await uploadProfilePicture(user, uid);
+      print('saved the profile pic ');
       // Show a success message or navigate to a different screen here
     } on FirebaseAuthException catch (e) {
-      // Handle any Firebase Authentication errors here
-      // You can show an error message to the user if needed
+      //display an error message must
       print("Firebase Authentication Error: ${e.message}");
     } catch (e) {
-      print("Error saving user to Firestore: $e");
+      print("~~~Error saving user to Firestore: $e");
       // Handle the Firestore save error as needed
     }
   }

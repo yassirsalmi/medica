@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              children: const <Widget>[
                 SearchField(),
               ],
             ),

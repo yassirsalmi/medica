@@ -206,6 +206,8 @@ class _SignUpFormState extends State<SignUpForm> {
     );
     setState(() {
       _imageFile = pickedFile;
+      //the file here is a xfile we have to cast it to a file
+      //viewModel.updatePhoto(_imageFile as File);
     });
   }
 }
