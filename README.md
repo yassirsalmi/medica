@@ -7,5 +7,7 @@ Medica: Your medical companion in the palm of your hand. Manage appointments, ac
  - Secure Authentication:
 
 ## Design: 
-
+<div style="text-align:center">
+ <img src="https://github.com/yassirsalmi/medica/blob/main/design/Login_screen.jpeg" alt="login_page" width="250">
+</div>
 
